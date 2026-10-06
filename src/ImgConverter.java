@@ -12,22 +12,22 @@ public class ImgConverter {
 
         BufferedImage original = ImageIO.read(new File(imgPath));
 
-        BufferedImage img = new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage(128, 72, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = img.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(original, 0, 0, 64, 64, null);
+        g2d.drawImage(original, 0, 0, 128, 72, null);
         g2d.dispose();
 
 
         int width = img.getWidth();
         int height = img.getHeight();
-        int[][] brightnessArray = new int[width][height];
+        int[][] brightnessArray = new int[height][width];
 
 //      loop to go through every pixel in the image and calculate the brightness of that pixel then we save the birghtness to Array
-        for (int row = 0; row < width; row++) {
-            for (int col = 0; col < height; col++) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
 
-                int pixelColor = img.getRGB(row,col);
+                int pixelColor = img.getRGB(col, row);
 
                 //  move bit >> x , and & operator
                 //  00000000 (A) 00000000(R) 00000000(G) 00000000(B)
@@ -39,7 +39,7 @@ public class ImgConverter {
                 //  0.2126R + 0.7152G + 0.0722B
                 int brightness = (int) ((r * 0.2126) + ( g * 0.7152) + (b * 0.0722));
 
-                brightnessArray[col][row] = brightness;
+                brightnessArray[row][col] = brightness;
 
             }
 
